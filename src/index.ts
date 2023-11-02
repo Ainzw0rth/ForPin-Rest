@@ -22,7 +22,7 @@ app.use(express.urlencoded({ extended: true }));
 // const server = http.createServer(app);
 
 app.get("/", (_req, res) => {
-    res.send("Server is running on port 3000");
+    res.send("Server is h running on port 3000");
 });
 
 app.get("/api/premium_users", async (req, res) => {
@@ -60,8 +60,6 @@ app.post("api/premium_users", async (req, res) => {
     }
 })
 
-
-
 app.listen(3000, () => {
-    console.log('Server running on http://localhost:3000/');
+    console.log('Server is lalaa http://localhost:3000/');
 })
