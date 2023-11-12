@@ -11,14 +11,20 @@ datasource db {
 }
 
 model premium_user {
-  user_id Int @id @default(autoincrement())
-  email String 
+  user_id Int
+  email String
   fullname String
   username String
   password String
   profile_path String
-  premium_post_id Int
+  @@unique([user_id, email])
 } 
+
+model premium_user_content {
+  user_id Int 
+  premium_post_id Int
+  @@unique([user_id, premium_post_id])
+}
 
 model exclusive_content {
   post_id Int @id @default(autoincrement())
