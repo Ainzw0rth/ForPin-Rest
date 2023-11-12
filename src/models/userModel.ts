@@ -10,15 +10,15 @@ class UserModel extends Prisma {
         return this.prisma.premium_user.findMany();
     }
 
-    async getEmail(param: String) {
+    async getUserFromEmail(param: String) {
         await this.prisma.$connect();
-        let email;
-        email = this.prisma.premium_user.findFirst({
+        let user;
+        user = this.prisma.premium_user.findFirst({
             where: {
                 email: param
             }
         })
-        return email;
+        return user;
     }
 
     async getUser(username: String) {

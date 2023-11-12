@@ -6,6 +6,6 @@ const userRoute = require('./userRoute')
 router.use('/user', userRoute)
 
 const exclusiveContentRoute = require('./exclusiveContentRoute')
-router.use('/premiumPost', exclusiveContentRoute)
+router.use('/exclusiveContent', exclusiveContentRoute)
 
 export default router;
