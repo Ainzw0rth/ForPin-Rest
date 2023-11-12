@@ -10,12 +10,23 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model premium_users {
-  user_id Int @id
+model premium_user {
+  user_id Int @id @default(autoincrement())
+  email String 
+  fullname String
+  username String
+  password String
+  profile_path String
+  premium_post_id Int
 } 
 
-model premium_post {
-  post_id Int @id
+model exclusive_content {
+  post_id Int @id @default(autoincrement())
+  caption String
+  descriptions String 
+  post_time DateTime
+  likes Int 
+  genre String 
 }
 
 model premium_admin {
