@@ -1,6 +1,7 @@
 import express, { Application } from 'express';
 import cors from 'cors';
 import router from './routers/router';
+const { PrismaClient } = require('@prisma/client');
 
 const app: Application = express();
 
@@ -11,6 +12,28 @@ app.use(cors({
 app.use(express.json());
 app.use('/', router);
 
+// const prisma = new PrismaClient();
+// async function insertExclusiveContent() {
+//     try {
+//       const result = await prisma.exclusive_content.create({
+//         data: {
+//           post_id: 2,
+//           caption: "aku terzeta zeta",
+//           descriptions: "aku terzeta zeta",
+//           likes: 0,
+//           genre: "happy",
+//         },
+//       });
+   
+//       console.log('Data inserted:', result);
+//     } catch (error) {
+//       console.error('Error inserting data:', error);
+//     } finally {
+//       await prisma.$disconnect();
+//     }
+//   }
+
+//   insertExclusiveContent();
 // const server = http.createServer(app);
 
 // app.get("/", (_req, res) => {

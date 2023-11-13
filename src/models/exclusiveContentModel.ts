@@ -7,7 +7,12 @@ class ExclusiveContentModel extends Prisma {
 
     async getExclusiveContents() {
         await this.prisma.$connect(); 
-        return this.prisma.exclusivecontent.findMany();
+        if (this.prisma.exclusive_content !== undefined) {
+            console.log("exist");
+            return this.prisma.exclusive_content.findMany();
+        } else {
+            console.log("not exist");
+        }
     }
 
     async getExclusiveContent(id: String) {
