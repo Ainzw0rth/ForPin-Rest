@@ -67,7 +67,7 @@ export async function login( req : Request, res : Response ) {
     try {
         const { username, password } = req.body;
         const user = await userModel.getUser(username);
-        const secret = process.env.TOKEN_SECRET;
+        const secret = process.env.JWT_TOKEN_SECRET;
         
         if (user) {
             const passwordTrue = bcrypt.compareSync(password, user.password);
