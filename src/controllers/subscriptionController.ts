@@ -1,4 +1,5 @@
 import { Request, Response } from "express";
+import { DOMParser } from 'xmldom';
 import axios from 'axios';
 
 const header =  {
@@ -10,6 +11,18 @@ const header =  {
         Date: new Date().toISOString().replace(/T/, ' ').replace(/\..+/, '')
     }
 };
+
+function getDataFromSOAP(xml: string) {
+    let payload: any = []
+    const xmlElement = new DOMParser().parseFromString(xml, 'text/html');
+    const returnElement = xmlElement.getElementsByTagName('return');
+    if (returnElement[0].firstChild) {
+        const data = returnElement[0].firstChild.nodeValue;
+         // @ts-ignore
+        payload = JSON.parse(data) ?? [];
+    }
+    return payload;
+}
 
 export async function subscription( req : Request, res : Response ) {
     let data: any = null;
@@ -28,7 +41,7 @@ export async function subscription( req : Request, res : Response ) {
                     ).then((res) => {
                         console.log("SOAP Response: ", res.data)
                         if (res.status === 200) {
-                            data = res.data;
+                            data = getDataFromSOAP(res.data);
                         }
                     }).catch((err) => {
                         console.log("HERE")
@@ -38,3 +51,32 @@ export async function subscription( req : Request, res : Response ) {
                             data: data 
                         }))
 }
+
+export async function newSub( req : Request, res : Response ) {
+    let data: any = null;
+    const reqBody = 
+    '<?xml version="1.0" encoding="utf-8"?>' +
+    '<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">' +
+    '<soap:Body>' +
+    '<subscriptionList xmlns="http://interfaces/">' +
+    '</subscriptionList>' +
+    '</soap:Body>' +
+    '</soap:Envelope>';
+
+    return axios.post(`${process.env.SOAP_URL}/subscription?wsdl`,
+                      reqBody,
+                      header
+                    ).then((res) => {
+                        console.log("SOAP Response: ", res.data)
+                        if (res.status === 200) {
+                            data = getDataFromSOAP(res.data);
+                        }
+                    }).catch((err) => {
+                        console.log("HERE")
+                        console.info(err);
+                    }).then(async() =>
+                        res.status(200).json({
+                            data: data 
+                        }))
+}
+
