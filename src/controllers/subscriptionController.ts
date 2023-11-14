@@ -14,12 +14,13 @@ const header =  {
 export async function subscription( req : Request, res : Response ) {
     let data: any = null;
     const reqBody = 
-    '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:int="http://service/">' +
-    '<soapenv:Header/>' +
-    '<soapenv:Body>' +
-    '<int:subscriptionList/>' +
-    '</soapenv:Body>' +
-    '</soapenv:Envelope>';
+    '<?xml version="1.0" encoding="utf-8"?>' +
+    '<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">' +
+    '<soap:Body>' +
+    '<subscriptionList xmlns="http://interfaces/">' +
+    '</subscriptionList>' +
+    '</soap:Body>' +
+    '</soap:Envelope>';
 
     return axios.post(`${process.env.SOAP_URL}/subscription?wsdl`,
                       reqBody,
