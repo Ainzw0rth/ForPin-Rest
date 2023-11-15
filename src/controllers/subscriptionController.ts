@@ -60,7 +60,7 @@ export async function updateSubscription( req : Request, rep : Response ) {
     '<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">' +
     '<soap:Body>' +
     '<updateSubscription xmlns="http://interfaces/">' +
-    `<creator_id>${creator_id}</creator_id>J` + 
+    `<creator_id>${creator_id}</creator_id>` + 
     `<subscriber_id>${subscriber_id}</subscriber_id>` + 
     `<status>${status}</status>` + 
     '</updateSubscription>' +

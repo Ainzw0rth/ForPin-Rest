@@ -55,14 +55,16 @@ export async function premiumList( req : Request, res : Response ) {
 
 export async function updatePremium( req : Request, rep : Response ) {
     const { creator_id, status } = req.body;
+    console.log(creator_id);
+    console.log(status);
     const reqBody = 
     '<?xml version="1.0" encoding="utf-8"?>' +
     '<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">' +
     '<soap:Body>' +
-    '<updatePremium xmlns="http://interfaces/">' +
-    `<creator_id>${creator_id}</creator_id>J` + 
+    '<updatePremiumUser xmlns="http://interfaces/">' +
+    `<creator_id>${creator_id}</creator_id>` + 
     `<status>${status}</status>` + 
-    '</updateSubscription>' +
+    '</updatePremiumUser>' +
     '</soap:Body>' +
     '</soap:Envelope>';
 
@@ -77,7 +79,7 @@ export async function updatePremium( req : Request, rep : Response ) {
                                 message: 'Successfully change premium status'
                             });
                         } else {
-                            rep.status(200).send({
+                            rep.status(500).send({
                                 status: rep.statusCode,
                                 message: 'Failed changing premium status'
                             })
