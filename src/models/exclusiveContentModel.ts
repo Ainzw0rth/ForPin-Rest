@@ -6,34 +6,38 @@ class ExclusiveContentModel extends Prisma {
     }
 
     async getExclusiveContents() {
-        await this.prisma.$connect(); 
-        if (this.prisma.exclusive_content !== undefined) {
-            console.log("exist");
-            return this.prisma.exclusive_content.findMany();
-        } else {
-            console.log("not exist");
-        }
+        await this.prisma.$connect();
+        let results = this.prisma.exclusive_content.findMany({
+            include: {
+              exclusive_media: true,
+              premium_user: true,
+            },
+            orderBy: {
+              post_time: 'desc',
+            },
+        });
+        return results;
     }
 
     async getExclusiveContent(id: String) {
         await this.prisma.$connect();
         let user;
-        user = this.prisma.premium_user.findFirst({
+        user = this.prisma.exclusive_content.findFirst({
             where: {
-                premium_post_id: id
+                post_id: id
             }
         })
         return user;
     }
     
-    async addExclusiveContent(premium_post_id: String, caption: String, descriptions: String, genre: String) {
+    async addExclusiveContent(caption: String, descriptions: String, genre: String, premium_user_id: String) {
         await this.prisma.$connect();
-        const newContent = this.prisma.create({
+        const newContent = this.prisma.Exclusive_content.create({
             data: {
-                premium_post_id,
                 caption, 
                 descriptions, 
-                genre 
+                genre,
+                premium_user_id
             }
         })
         return newContent;
