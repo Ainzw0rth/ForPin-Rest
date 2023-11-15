@@ -7,4 +7,3 @@ router.get('/', premiumList);
 router.put('/', updatePremium);
 
 module.exports = router;
-

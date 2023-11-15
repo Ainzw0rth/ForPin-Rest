@@ -14,4 +14,7 @@ router.use('/media', mediaRoute)
 const subscriptionRoute = require('./subscriptionRoute')
 router.use('/subscription', subscriptionRoute)
 
+const premiumRoute = require('./premiumRoute')
+router.use('/premium', premiumRoute)
+
 export default router;
