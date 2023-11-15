@@ -15,18 +15,26 @@ export function addExclusiveContent( req : Request, res : Response ) {
     }
 }
 
-export function getExclusiveContents( req : Request, res : Response ) {
+export async function getExclusiveContents( req : Request, res : Response ) {
     try {
-        return exclusiveContentModel.getExclusiveContents();
+        const results = await exclusiveContentModel.getExclusiveContents();
+        return res.json({
+            success: true,
+            data: results
+        })
     } catch {
         res.sendStatus(500);
     }
 }
 
-export function getExclusiveContent( req : Request, res : Response ) {
+export async function getExclusiveContent( req : Request, res : Response ) {
     try {
         const { premium_post_id } = req.params;
-        return exclusiveContentModel.getExclusiveContent(premium_post_id);
+        const results = await exclusiveContentModel.getExclusiveContent(premium_post_id);
+        return res.json({
+            success: true,
+            data: results
+        })
     } catch {
         res.sendStatus(500);
     }

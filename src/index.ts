@@ -11,29 +11,57 @@ app.use(cors({
 
 app.use(express.json());
 app.use('/', router);
+app.use('/media', express.static('uploads'));
 
-// const prisma = new PrismaClient();
-// async function insertExclusiveContent() {
-//     try {
-//       const result = await prisma.exclusive_content.create({
-//         data: {
-//           post_id: 2,
-//           caption: "aku terzeta zeta",
-//           descriptions: "aku terzeta zeta",
-//           likes: 0,
-//           genre: "happy",
-//         },
-//       });
+const prisma = new PrismaClient();
+async function insertInitialData() {
+    try {
+        const poster = await prisma.Premium_user.create({
+            data: {
+                email: "vestia_zeta@gmail.com",
+                fullname: "Vestia Zeta",
+                username: "agent_V7",
+                password: "bazo",
+                profile_path: "http://localhost:3000/media/profile pic.gif",
+            },
+        });
    
-//       console.log('Data inserted:', result);
-//     } catch (error) {
-//       console.error('Error inserting data:', error);
-//     } finally {
-//       await prisma.$disconnect();
-//     }
-//   }
+        console.log('Data poster inserted:', poster);
+        const post = await prisma.Exclusive_content.create({
+            data: {
+            caption: "terzeta zeta",
+            descriptions: "uweeeeeeeeee",
+            genre: "happy",
+            premium_user_id: poster.user_id,
+            },
+        });
+    
+        console.log('Data post inserted:', post);
 
-//   insertExclusiveContent();
+        const media = await prisma.Exclusive_media.create({
+            data: {
+            media_path: "http://localhost:3000/media/Jamming.mp4",
+            media_post_id: post.post_id,
+            },
+        });
+        console.log('Data media inserted:', media);
+
+        const media2 = await prisma.Exclusive_media.create({
+            data: {
+            media_path: "http://localhost:3000/media/sO yOU HAve a MoThER.mp4",
+            media_post_id: post.post_id,
+            },
+        });
+        console.log('Data media inserted:', media2);
+    } catch (error) {
+      console.error('Error inserting data:', error);
+    } finally {
+      await prisma.$disconnect();
+    }
+}
+
+// insertInitialData();
+
 // const server = http.createServer(app);
 
 // app.get("/", (_req, res) => {

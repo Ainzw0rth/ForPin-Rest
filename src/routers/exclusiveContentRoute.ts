@@ -5,7 +5,7 @@ const router = Router();
 
 router.post('/', addExclusiveContent);
 router.get('/', getExclusiveContents);
-router.get('/', getExclusiveContent);
+router.get('/contentdetails/', getExclusiveContent);
 
 module.exports = router;
 
