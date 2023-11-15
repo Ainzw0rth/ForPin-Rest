@@ -17,8 +17,8 @@ model Premium_user {
   username String @unique
   password String
   profile_path String
-  follows User[] @relation("UserFollows", references: [id])
-  followers User[] @relation("UserFollows", references: [id])
+  follows Premium_user[] @relation("UserFollows")
+  followers Premium_user[] @relation("UserFollows")
   exclusive_contents Exclusive_content[]
   @@unique([user_id, email])
 }
