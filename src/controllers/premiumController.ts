@@ -26,18 +26,18 @@ function getDataFromSOAP(xml: string) {
     return payload;
 }
 
-export async function subscription( req : Request, res : Response ) {
+export async function premiumList( req : Request, res : Response ) {
     let data: any = null;
     const reqBody = 
     '<?xml version="1.0" encoding="utf-8"?>' +
     '<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">' +
     '<soap:Body>' +
-    '<subscriptionList xmlns="http://interfaces/">' +
-    '</subscriptionList>' +
+    '<premiumList xmlns="http://interfaces/">' +
+    '</premiumList>' +
     '</soap:Body>' +
     '</soap:Envelope>';
 
-    return axios.post(`${process.env.SOAP_URL}/subscription?wsdl`,
+    return axios.post(`${process.env.SOAP_URL}/premium?wsdl`,
                       reqBody,
                       header
                     ).then((res) => {
@@ -53,21 +53,20 @@ export async function subscription( req : Request, res : Response ) {
                         }))
 }
 
-export async function updateSubscription( req : Request, rep : Response ) {
-    const { creator_id, subscriber_id, status } = req.body;
+export async function updatePremium( req : Request, rep : Response ) {
+    const { creator_id, status } = req.body;
     const reqBody = 
     '<?xml version="1.0" encoding="utf-8"?>' +
     '<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">' +
     '<soap:Body>' +
-    '<updateSubscription xmlns="http://interfaces/">' +
+    '<updatePremium xmlns="http://interfaces/">' +
     `<creator_id>${creator_id}</creator_id>J` + 
-    `<subscriber_id>${subscriber_id}</subscriber_id>` + 
     `<status>${status}</status>` + 
     '</updateSubscription>' +
     '</soap:Body>' +
     '</soap:Envelope>';
 
-    return axios.post(`${process.env.SOAP_URL}/subscription?wsdl`,
+    return axios.post(`${process.env.SOAP_URL}/premium?wsdl`,
                       reqBody,
                       header
                     ).then((res) => {
@@ -75,12 +74,12 @@ export async function updateSubscription( req : Request, rep : Response ) {
                         if (res.status === 200) {
                             rep.status(200).send({
                                 status: rep.statusCode,
-                                message: 'Successfully change subscription status'
+                                message: 'Successfully change premium status'
                             });
                         } else {
                             rep.status(200).send({
                                 status: rep.statusCode,
-                                message: 'Failed changing subscription status'
+                                message: 'Failed changing premium status'
                             })
                         }
                     })
