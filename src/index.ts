@@ -19,22 +19,30 @@ app.use('/media', express.static('uploads'));
 const prisma = new PrismaClient();
 async function insertInitialData() {
     try {
-        const poster = await prisma.Premium_user.create({
-            data: {
-                email: "vestia_zeta@gmail.com",
-                fullname: "Vestia Zeta",
-                username: "agent_V7",
-                password: "bazo",
-                profile_path: "http://localhost:3000/media/profile pic.gif",
+        const premium_user_data = {
+            email: "vestia_zeta@gmail.com",
+            fullname: "Vestia Zeta",
+            username: "agent_V7",
+            password: "bazo",
+            profile_path: "http://localhost:3000/media/profile pic.gif",
+        };
+
+        const tes = await fetch("http://localhost:3000/user/register", {
+            method: 'POST',
+            body: JSON.stringify(premium_user_data),
+            headers: {
+                'Content-Type': 'application/json',
             },
-        });
-   
-        console.log('Data poster inserted:', poster);
+        }).then(response => response.json())
+        .then(data => console.log(data))
+        .catch(error => console.error('Error:', error));
+        console.log('Data poster inserted:', premium_user_data);
+
         const post = await prisma.Exclusive_content.create({
             data: {
             caption: "terzeta zeta",
             descriptions: "uweeeeeeeeee",
-            premium_user_id: poster.user_id,
+            premium_user_id: 1,
             },
         });
     
