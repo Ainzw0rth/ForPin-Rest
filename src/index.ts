@@ -1,6 +1,10 @@
 import express, { Application } from 'express';
+import { Request, Response } from "express";
 import cors from 'cors';
 import router from './routers/router';
+import path from 'path';
+import { Multer } from 'multer';
+const multer = require('multer');
 const { PrismaClient } = require('@prisma/client');
 
 const app: Application = express();
@@ -31,7 +35,6 @@ async function insertInitialData() {
             data: {
             caption: "terzeta zeta",
             descriptions: "uweeeeeeeeee",
-            genre: "happy",
             premium_user_id: poster.user_id,
             },
         });
@@ -53,6 +56,19 @@ async function insertInitialData() {
             },
         });
         console.log('Data media inserted:', media2);
+
+        const tag = await prisma.Tag.create({
+            data: {
+                genre: "happy",
+                exclusive_content: {
+                    connect: {
+                        post_id: post.post_id
+                    }
+                }
+            }
+        })
+        console.log('Data data inserted:', tag);
+
     } catch (error) {
       console.error('Error inserting data:', error);
     } finally {
@@ -62,46 +78,32 @@ async function insertInitialData() {
 
 // insertInitialData();
 
-// const server = http.createServer(app);
+// for uploading the media
+interface MulterRequest extends Request {
+    file: any;
+}
 
-// app.get("/", (_req, res) => {
-//     res.send("Server is h running on port 3000");
-// });
+const storage = multer.diskStorage({
+    destination: './uploads',
+    filename: (req: MulterRequest, file: Express.Multer.File, cb: (error: Error | null, filename: string) => void) => {
+        cb(null, `${file.fieldname}_${Date.now()}${path.extname(file.originalname)}`);
+    },
+});
 
-// app.get("/api/premium_user", async (req, res) => {
-//     try {
-//         const allPremiumUsers = await prisma.premium_user.findMany();
-//         return res.json({
-//             success: true,
-//             data: allPremiumUsers
-//         });
-//     } catch (error) {
-//         return res.json({
-//             success: false,
-//             message: error
-//         });
-//     }
-// });
+const upload = multer({
+    storage: storage
+})
 
-// app.post("api/premium_user", async (req, res) => {
-//     try {
-//         const { user_id } = req.body;
-//         const newPremiumUser = await prisma.premium_user.create({
-//             data: {
-//                 user_id : String 
-//             }
-//         });
-//         return res.json({
-//             success: true,
-//             data: newPremiumUser
-//         })
-//     } catch (error) {
-//         return res.json({
-//             success: false,
-//             message: error
-//         }); 
-//     }
-// })
+app.post("/upload", upload.array('file'), (req: Request, res: Response) => {
+    console.log(req.files);
+    console.log(req.body);
+
+    const mediaPaths = (req.files as Express.Multer.File[]).map(file => 'http://localhost:3000/media/' + file.filename);
+    res.json({
+        success: 1,
+        media_paths: mediaPaths
+    });
+});
 
 app.listen(3000, () => {
     console.log('Server is lalaa http://localhost:3000/');

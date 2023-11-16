@@ -14,4 +14,7 @@ router.use('/media', mediaRoute)
 const subscriptionRoute = require('./subscriptionRoute')
 router.use('/subscription', subscriptionRoute)
 
+const tagsRoute = require('./tagsRoute')
+router.use('/tags', tagsRoute)
+
 export default router;

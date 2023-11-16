@@ -30,17 +30,52 @@ class ExclusiveContentModel extends Prisma {
         return user;
     }
     
-    async addExclusiveContent(caption: String, descriptions: String, genre: String, premium_user_id: String) {
+    async addExclusiveContent(user_id: any, input_caption: any, descriptions: any, media_paths: any, genres: any) {
         await this.prisma.$connect();
-        const newContent = this.prisma.Exclusive_content.create({
+
+        const newContent = await this.prisma.Exclusive_content.create({
             data: {
-                caption, 
-                descriptions, 
-                genre,
-                premium_user_id
+                caption: input_caption,
+                descriptions: descriptions,
+                premium_user_id: user_id,
             }
-        })
-        return newContent;
+        });
+    
+        const mediaPromises = media_paths.map(async (media_path: string) => {
+            return await this.prisma.Exclusive_media.create({
+                data: {
+                    media_path: media_path,
+                    media_post_id: newContent.post_id,
+                },
+            });
+        });
+    
+        const tagPromises = genres.map(async (genre: string) => {
+            const existingTag = await this.prisma.Tag.findUnique({
+              where: { genre: genre },
+            });
+          
+            const tag = existingTag ? existingTag: await this.prisma.Tag.create({ data: { genre: genre } });
+          
+            return await this.prisma.Tag.update({
+              where: { genre: tag.genre },
+              data: {
+                exclusive_content: {
+                  connect: {
+                    post_id: newContent.post_id,
+                  },
+                },
+              },
+            });
+          });
+    
+        const [media, tags] = await Promise.all([Promise.all(mediaPromises), Promise.all(tagPromises)]);
+    
+        return {
+            newContent: newContent,
+            media: media,
+            tags: tags,
+        };
     }
 }
 
