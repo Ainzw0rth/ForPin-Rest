@@ -3,7 +3,7 @@ import { Router } from "express";
 
 const router = Router();
 
-router.get('/', premiumList);
+router.post('/', premiumList);
 router.put('/', updatePremium);
 
 module.exports = router;
