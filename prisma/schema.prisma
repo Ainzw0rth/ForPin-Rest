@@ -23,15 +23,14 @@ model Premium_user {
   @@unique([user_id, email])
 }
 
-
 model Exclusive_content {
   post_id Int @id @default(autoincrement())
   caption String
   descriptions String 
   post_time DateTime @default(now())
   likes Int @default(0)
-  genre String 
   exclusive_media Exclusive_media[]
+  tags Tag[]
   premium_user_id Int
   premium_user Premium_user @relation(fields: [premium_user_id], references: [user_id])
 }
@@ -41,6 +40,12 @@ model Exclusive_media {
   media_path String
   media_post_id Int
   exclusive_content Exclusive_content @relation(fields: [media_post_id], references: [post_id])
+}
+
+model Tag {
+  id Int @id @default(autoincrement())
+  genre String @unique
+  exclusive_content Exclusive_content[]
 }
 
 model Premium_admin {

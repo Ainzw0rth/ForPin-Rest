@@ -2,10 +2,12 @@ import { Request, Response } from "express";
 import ExclusiveContentModel from "../models/exclusiveContentModel";
 
 const exclusiveContentModel = new ExclusiveContentModel();
-export function addExclusiveContent( req : Request, res : Response ) {
+export async function addExclusiveContent( req : Request, res : Response ) {
     try {
-        const { post_id, caption, descriptions, genre } = req.body;
-        const newContent = exclusiveContentModel.addExclusiveContent(post_id, caption, descriptions, genre);
+        console.log(req.body);
+        const { user_id, caption, descriptions, media_paths, genres } = req.body;
+        const newContent = exclusiveContentModel.addExclusiveContent(user_id, caption, descriptions, media_paths, genres);
+        
         return res.json({
             success: true,
             data: newContent

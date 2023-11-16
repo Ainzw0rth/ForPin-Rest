@@ -14,6 +14,9 @@ router.use('/media', mediaRoute)
 const subscriptionRoute = require('./subscriptionRoute')
 router.use('/subscription', subscriptionRoute)
 
+const tagsRoute = require('./tagsRoute')
+router.use('/tags', tagsRoute)
+
 const premiumRoute = require('./premiumRoute')
 router.use('/premium', premiumRoute)
 
