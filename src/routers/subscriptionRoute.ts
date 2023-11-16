@@ -3,7 +3,7 @@ import { Router } from "express";
 
 const router = Router();
 
-router.post('/', subscription);
+router.get('/', subscription);
 router.put('/', updateSubscription);
 
 module.exports = router;

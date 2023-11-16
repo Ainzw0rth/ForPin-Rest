@@ -3,7 +3,6 @@ import { Request, Response } from "express";
 import cors from 'cors';
 import router from './routers/router';
 import path from 'path';
-import { Multer } from 'multer';
 const multer = require('multer');
 const { PrismaClient } = require('@prisma/client');
 
