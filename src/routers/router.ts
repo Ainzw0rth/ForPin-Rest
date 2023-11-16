@@ -17,4 +17,7 @@ router.use('/subscription', subscriptionRoute)
 const tagsRoute = require('./tagsRoute')
 router.use('/tags', tagsRoute)
 
+const premiumRoute = require('./premiumRoute')
+router.use('/premium', premiumRoute)
+
 export default router;
