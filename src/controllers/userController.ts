@@ -1,46 +1,85 @@
 import { PrismaClient } from "@prisma/client";
 import { Request, Response } from "express";
 import UserModel from "../models/userModel";
-import AdminModel from "../models/adminModel";
 
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 
 const userModel = new UserModel();
-const adminModel = new AdminModel();
+const prisma = new PrismaClient();
+
+export async function register( req : Request, res : Response ) {
+    try {
+        const { email, fullname, username, password, profile_path } = req.body;
+        
+        const salt = await bcrypt.genSalt(10);
+        const hashedPassword = await bcrypt.hash(password, salt);
+
+        const usernameDb = await userModel.getUser(username);
+        const emailDb = await userModel.getUserFromEmail(email);
+
+        if (usernameDb && emailDb) {
+            res.status(400).send({
+                status: res.statusCode,
+                success: false,
+                data: null,
+                message: 'Username and email already exist'
+            });
+            return;
+        }
+        if (usernameDb) {
+            res.status(400).send({
+                status: res.statusCode,
+                success: false,
+                data: null,
+                message: 'Username already exist'
+            })
+            return;
+        }
+        if (emailDb) {
+            res.status(400).send({
+                status: res.statusCode,
+                success: false,
+                data: null,
+                message: 'Email already exist'
+            })
+            return;
+        }
+        const newPremiumUser = await prisma.premium_user.create({
+            data: {
+                email, 
+                fullname, 
+                username,
+                password: hashedPassword,
+                profile_path,
+                is_admin: true
+            }
+        });
+        return res.status(201).json({
+            success: true,
+            data: newPremiumUser,
+            message: 'User registered successfully'
+        });
+    } catch {
+        return res.sendStatus(500);
+    }
+}
 
 export async function login( req : Request, res : Response ) {
     try {
         const { username, password } = req.body;
         const user = await userModel.getUser(username);
-        const admin = await adminModel.getAdmin(username);
         const secret = process.env.JWT_TOKEN_SECRET;
 
-        if (admin) {
-            const passwordTrue = bcrypt.compareSync(password, admin.password);
-            const token = jwt.sign({username: username, password: password}, secret, {expiresIn: '24h'});
-            if (passwordTrue) {
-                res.status(200).json({
-                    success: true,
-                    data: admin,
-                    token,
-                    is_admin: true
-                })
-            } else {
-                res.json({
-                    message: "failed"
-                });
-            }
-        } else {
-            if (user) {
+        if (user) {
+            if (user.is_admin) {
                 const passwordTrue = bcrypt.compareSync(password, user.password);
                 const token = jwt.sign({username: username, password: password}, secret, {expiresIn: '24h'});
                 if (passwordTrue) {
-                    res.status(200).json({
+                    res.status(201).json({
                         success: true,
                         data: user,
                         token,
-                        is_admin: false
                     })
                 } else {
                     res.json({
@@ -48,16 +87,60 @@ export async function login( req : Request, res : Response ) {
                     });
                 }
             } else {
-                res.sendStatus(400);
+
+                const formData = new FormData();
+                formData.append("username", username);
+                formData.append("password", password);
+
+                const token = jwt.sign({username: username, password: password}, secret, {expiresIn: '24h'});
+                
+                const response = await fetch('http://host.docker.internal:80/user/login', {
+                    method: 'POST',
+                    body: formData
+                }).then(response => {
+                    if (response.status === 201) {
+                        res.status(201).json({
+                            success: true,
+                            data: user,
+                            token
+                        })
+                    } else {
+                        res.sendStatus(403);
+                    }
+                })
             }
+        } else {
+            res.sendStatus(400);
         }
+
     } catch {
         return res.sendStatus(500);
     }
 }
 
 export async function addUser(req : Request, rep : Response) {
-    const { user_id } = req.params;
-    const response = await fetch("http://localhost:80/user/login")
+    const { username } = req.body;
+    const response = await fetch(`http://host.docker.internal:80/user/getUser/${username}`, {
+        method: 'GET',
+    }).then(response => response.json())
+    .then(data => {
+        const newUser = userModel.addUser(data.email, data.fullname, data.username, data.password, data.profile_path, false);
+        rep.status(201).json({
+            success: true,
+            data: newUser
+        });
+    })
+    .catch(error => console.error('Error:', error));
 }
 
+export async function getAllUsers( req : Request, res : Response ) {
+    try {
+        const results = await userModel.getAllUsers();
+        return res.json({
+            success: true,
+            data: results
+        })
+    } catch {
+        res.sendStatus(500);
+    }
+}

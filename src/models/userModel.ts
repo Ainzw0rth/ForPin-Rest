@@ -31,6 +31,21 @@ class UserModel extends Prisma {
         })
         return user;
     }
+
+    async addUser(email: String, fullname: String, username: String, password: String, profile_path: String, is_admin: Boolean) {
+        await this.prisma.$connect();
+        const newUser = this.prisma.premium_user.create({
+            data: {
+                email, 
+                fullname, 
+                username,
+                password,
+                profile_path,
+                is_admin
+            }
+        });
+        return newUser;
+    }
 }
 
 export default UserModel;

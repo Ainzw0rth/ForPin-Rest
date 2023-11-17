@@ -20,7 +20,4 @@ router.use('/tags', tagsRoute)
 const premiumRoute = require('./premiumRoute')
 router.use('/premium', premiumRoute)
 
-const adminRoute = require('./adminRoute')
-router.use('/admin', adminRoute)
-
 export default router;
