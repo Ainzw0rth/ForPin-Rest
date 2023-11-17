@@ -6,5 +6,5 @@ const router = Router();
 router.get('/', subscription);
 router.put('/', updateSubscription);
 
-module.exports = router;
+module.exports = router;    
 
