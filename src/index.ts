@@ -24,6 +24,7 @@ async function insertInitialData() {
             fullname: "Vestia Zeta",
             username: "agent_V7",
             password: "bazo",
+            is_admin: true,
             profile_path: "http://localhost:3000/media/profile pic.gif",
         };
 
@@ -32,6 +33,7 @@ async function insertInitialData() {
             fullname: "Vestia Zeta2",
             username: "agent_V72",
             password: "bazo2",
+            is_admin: false,
             profile_path: "http://localhost:3000/media/profile pic.gif",
         };
 
@@ -40,6 +42,7 @@ async function insertInitialData() {
             fullname: "userone",
             username: "userone",
             password: "password1",
+            is_admin: false,
             profile_path: "http://localhost:3000/media/profile pic.gif",
         };
 

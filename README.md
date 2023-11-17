@@ -9,43 +9,33 @@
 ## Daftar Isi
 
 -   [Deskripsi Aplikasi Web](#deskripsi-aplikasi-web)
--   [Screenshot Tampilan Aplikasi](#screenshot-tampilan-aplikasi)
+-   [Skema Basis Data](#skema-basis-data)
+-   [Endpoint API](#endpoint-api)
 -   [Pembagian Tugas](#pembagian-tugas)
 
 ## Deskripsi Aplikasi Web
 
 ForPin REST Service merupakan Web Service berbasis REST protocol yang menyediakan layanan untuk memakai premium feature ForPin. Web Service ini dibangun dengan menggunakan NodeJS, menggunakan PostgreSQL untuk basis data, dan docker sebagai containernya.
 
+## Skema Basis Data
+![Skema Basis Data](./screenshots/rest.png)
+
+## Endpoint API
+- http://localhost:3000/user        
+- http://localhost:3000/user/getSearch        
+- http://localhost:3000/user/login          
+- http://localhost:3000/exclusiveContent    
+- http://localhost:3000/exclusiveContent/contentdetails   
+- http://localhost:3000/media               
+- http://localhost:3000/subscription        
+- http://localhost:3000/tags     
+- http://localhost:3000/premium
+
 ## Pembagian Tugas
 
-### Server Side
-
 | Fitur                             | NIM                           |
 | --------------------------------- | ----------------------------- |
-| Login                             | 13521156                      |
-| Register                          | 13521156                      |
-| Home                              | 13521069                      |
-| Search, Sort, dan Filter          | 13521069                      |
-| Tambah Post                       | 13521069, 13521156            |
-| Detail Post                       | 13521156                      |
-| Edit Post                         | 13521069, 13521156            |
-| Detail User                       | 13521069, 13521156            |
-| Edit User                         | 13521069, 13521156            |
-| Daftar User                       | 13521156                      |
-| Error Page                        | 13521069                      |
-
-### Client Side
-
-| Fitur                             | NIM                           |
-| --------------------------------- | ----------------------------- |
-| Login                             | 13521069, 13521156            |
-| Register                          | 13521069, 13521156            |
-| Home                              | 13521069, 13521156            |
-| Search, Sort, dan Filter          | 13521069, 13521156            |
-| Tambah Post                       | 13521069, 13521156            |
-| Detail Post                       | 13521069, 13521156            |
-| Edit Post                         | 10023082, 13521069, 13521156  |
-| Detail User                       | 10023082, 13521069, 13521156  |
-| Edit User                         | 13521069, 13521156            |
-| Daftar User                       | 13521156                      |
-| Error Page                        | 13521069                      |
+| Routing                           | 13521069, 13521156            |
+| Controllers                       | 13521069, 13521156            |
+| Models                            | 13521069, 13521156            |
+| Database Schema                   | 13521156                      |

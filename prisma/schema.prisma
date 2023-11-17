@@ -20,6 +20,7 @@ model Premium_user {
   follows Premium_user[] @relation("UserFollows")
   followers Premium_user[] @relation("UserFollows")
   exclusive_contents Exclusive_content[]
+  is_admin Boolean
   @@unique([user_id, email])
 }
 
@@ -47,13 +48,3 @@ model Tag {
   genre String @unique
   exclusive_content Exclusive_content[]
 }
-
-model Premium_admin {
-  admin_id Int @id @default(autoincrement())
-  email String
-  fullname String
-  username String
-  password String
-  profile_path String
-}
-

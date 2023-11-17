@@ -128,14 +128,14 @@ export async function notYetSubscribed( req : Request, rep : Response ) {
 }
 
 export async function updateSubscription( req : Request, rep : Response ) {
-    const { creator_id, subscriber_id, status } = req.body;
+    const { creator_username, subscriber_username, status } = req.body;
     const reqBody = 
     '<?xml version="1.0" encoding="utf-8"?>' +
     '<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">' +
     '<soap:Body>' +
     '<updateSubscription xmlns="http://interfaces/">' +
-    `<creator_id>${creator_id}</creator_id>` + 
-    `<subscriber_id>${subscriber_id}</subscriber_id>` + 
+    `<creator_username>${creator_username}</creator_username>` + 
+    `<subscriber_username>${subscriber_username}</subscriber_username>` + 
     `<status>${status}</status>` + 
     '</updateSubscription>' +
     '</soap:Body>' +

@@ -7,5 +7,5 @@ router.get('/', subscription);
 router.post('/', notYetSubscribed);
 router.put('/', updateSubscription);
 
-module.exports = router;
+module.exports = router;    
 

@@ -6,6 +6,7 @@ CREATE TABLE "Premium_user" (
     "username" TEXT NOT NULL,
     "password" TEXT NOT NULL,
     "profile_path" TEXT NOT NULL,
+    "is_admin" BOOLEAN NOT NULL,
 
     CONSTRAINT "Premium_user_pkey" PRIMARY KEY ("user_id")
 );
@@ -37,18 +38,6 @@ CREATE TABLE "Tag" (
     "genre" TEXT NOT NULL,
 
     CONSTRAINT "Tag_pkey" PRIMARY KEY ("id")
-);
-
--- CreateTable
-CREATE TABLE "Premium_admin" (
-    "admin_id" SERIAL NOT NULL,
-    "email" TEXT NOT NULL,
-    "fullname" TEXT NOT NULL,
-    "username" TEXT NOT NULL,
-    "password" TEXT NOT NULL,
-    "profile_path" TEXT NOT NULL,
-
-    CONSTRAINT "Premium_admin_pkey" PRIMARY KEY ("admin_id")
 );
 
 -- CreateTable
