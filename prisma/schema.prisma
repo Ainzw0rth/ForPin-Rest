@@ -1,0 +1,50 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Premium_user {
+  user_id Int @id @default(autoincrement())
+  email String @unique
+  fullname String
+  username String @unique
+  password String
+  profile_path String
+  follows Premium_user[] @relation("UserFollows")
+  followers Premium_user[] @relation("UserFollows")
+  exclusive_contents Exclusive_content[]
+  is_admin Boolean
+  @@unique([user_id, email])
+}
+
+model Exclusive_content {
+  post_id Int @id @default(autoincrement())
+  caption String
+  descriptions String 
+  post_time DateTime @default(now())
+  likes Int @default(0)
+  exclusive_media Exclusive_media[]
+  tags Tag[]
+  premium_user_id Int
+  premium_user Premium_user @relation(fields: [premium_user_id], references: [user_id])
+}
+
+model Exclusive_media {
+  media_id Int @id @default(autoincrement())
+  media_path String
+  media_post_id Int
+  exclusive_content Exclusive_content @relation(fields: [media_post_id], references: [post_id])
+}
+
+model Tag {
+  id Int @id @default(autoincrement())
+  genre String @unique
+  exclusive_content Exclusive_content[]
+}
