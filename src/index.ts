@@ -24,10 +24,10 @@ async function insertInitialData() {
             fullname: "Vestia Zeta",
             username: "agent_V7",
             password: "bazo",
-            profile_path: "http://localhost:3000/media/profile pic.gif",
+            profile_path: "http://host.docker.internal:3000/media/profile pic.gif",
         };
 
-        const tes = await fetch("http://localhost:3000/user/register", {
+        const tes = await fetch("http://host.docker.internal:3000/user/register", {
             method: 'POST',
             body: JSON.stringify(premium_user_data),
             headers: {
@@ -50,7 +50,7 @@ async function insertInitialData() {
 
         const media = await prisma.Exclusive_media.create({
             data: {
-            media_path: "http://localhost:3000/media/Jamming.mp4",
+            media_path: "http://host.docker.internal:3000/media/Jamming.mp4",
             media_post_id: post.post_id,
             },
         });
@@ -58,7 +58,7 @@ async function insertInitialData() {
 
         const media2 = await prisma.Exclusive_media.create({
             data: {
-            media_path: "http://localhost:3000/media/sO yOU HAve a MoThER.mp4",
+            media_path: "http://host.docker.internal:3000/media/sO yOU HAve a MoThER.mp4",
             media_post_id: post.post_id,
             },
         });
@@ -83,7 +83,7 @@ async function insertInitialData() {
     }
 }
 
-// insertInitialData();
+insertInitialData();
 
 // for uploading the media
 interface MulterRequest extends Request {
@@ -105,7 +105,7 @@ app.post("/upload", upload.array('file'), (req: Request, res: Response) => {
     console.log(req.files);
     console.log(req.body);
 
-    const mediaPaths = (req.files as Express.Multer.File[]).map(file => 'http://localhost:3000/media/' + file.filename);
+    const mediaPaths = (req.files as Express.Multer.File[]).map(file => 'http://host.docker.internal:3000/media/' + file.filename);
     res.json({
         success: 1,
         media_paths: mediaPaths
