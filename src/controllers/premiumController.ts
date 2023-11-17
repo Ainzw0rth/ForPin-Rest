@@ -54,13 +54,13 @@ export async function premiumList( req : Request, res : Response ) {
 }
 
 export async function updatePremium( req : Request, rep : Response ) {
-    const { creator_id, status } = req.body;
+    const { creator_username, status } = req.body;
     const reqBody = 
     '<?xml version="1.0" encoding="utf-8"?>' +
     '<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">' +
     '<soap:Body>' +
     '<updatePremiumUser xmlns="http://interfaces/">' +
-    `<creator_id>${creator_id}</creator_id>` + 
+    `<creator_username>${creator_username}</creator_username>` + 
     `<status>${status}</status>` + 
     '</updatePremiumUser>' +
     '</soap:Body>' +

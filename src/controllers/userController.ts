@@ -51,14 +51,13 @@ export async function login( req : Request, res : Response ) {
                 res.sendStatus(400);
             }
         }
-        
-      
     } catch {
         return res.sendStatus(500);
     }
 }
 
-export function logout() {
-    return "";
+export async function addUser(req : Request, rep : Response) {
+    const { user_id } = req.params;
+    const response = await fetch("http://localhost:80/user/login")
 }
 
