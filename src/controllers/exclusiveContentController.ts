@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import ExclusiveContentModel from "../models/exclusiveContentModel";
 
 const exclusiveContentModel = new ExclusiveContentModel();
+
 export async function addExclusiveContent( req : Request, res : Response ) {
     try {
         console.log(req.body);
