@@ -27,6 +27,22 @@ async function insertInitialData() {
             profile_path: "http://localhost:3000/media/profile pic.gif",
         };
 
+        const premium_user_data2 = {
+            email: "vestia_zeta2@gmail.com",
+            fullname: "Vestia Zeta2",
+            username: "agent_V72",
+            password: "bazo2",
+            profile_path: "http://localhost:3000/media/profile pic.gif",
+        };
+
+        const premium_user_data_userone = {
+            email: "userone@gmail.com",
+            fullname: "userone",
+            username: "userone",
+            password: "password1",
+            profile_path: "http://localhost:3000/media/profile pic.gif",
+        };
+
         const tes = await fetch("http://localhost:3000/user/register", {
             method: 'POST',
             body: JSON.stringify(premium_user_data),
@@ -37,6 +53,28 @@ async function insertInitialData() {
         .then(data => console.log(data))
         .catch(error => console.error('Error:', error));
         console.log('Data poster inserted:', premium_user_data);
+
+        const tes2 = await fetch("http://localhost:3000/user/register", {
+            method: 'POST',
+            body: JSON.stringify(premium_user_data2),
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        }).then(response => response.json())
+        .then(data => console.log(data))
+        .catch(error => console.error('Error:', error));
+        console.log('Data poster inserted:', premium_user_data2);
+
+        const tes3 = await fetch("http://localhost:3000/user/register", {
+            method: 'POST',
+            body: JSON.stringify(premium_user_data_userone),
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        }).then(response => response.json())
+        .then(data => console.log(data))
+        .catch(error => console.error('Error:', error));
+        console.log('Data poster inserted:', premium_user_data_userone);
 
         const post = await prisma.Exclusive_content.create({
             data: {

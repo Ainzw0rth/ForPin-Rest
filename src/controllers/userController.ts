@@ -91,6 +91,24 @@ export async function login( req : Request, res : Response ) {
     }
 }
 
+export async function getPremiumUsersNotInList( req : Request, res : Response ) {
+    try {
+        const { usernames_list } = req.body;
+        console.log("tes:");
+        console.log(usernames_list);
+        console.log("tes1:");
+        console.log(req.body);
+        
+        const results = await userModel.getPremiumUsersNotInList(usernames_list);
+        return res.json({
+            success: true,
+            data: results
+        })
+    } catch {
+        return res.sendStatus(500);
+    }
+}
+
 export function logout() {
     return "";
 }

@@ -31,6 +31,21 @@ class UserModel extends Prisma {
         })
         return user;
     }
+
+    async getPremiumUsersNotInList(usernames: string[]): Promise<any[]> {
+        console.log(usernames);
+        await this.prisma.$connect();
+        let premiumUsers;
+        premiumUsers = this.prisma.premium_user.findMany({
+          where: {
+            username: {
+              notIn: usernames,
+            },
+          },
+        });
+      
+        return premiumUsers;
+      }
 }
 
 export default UserModel;
